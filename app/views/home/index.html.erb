@@ -1,0 +1,67 @@
+<div id="main" class="flex min-h-dvh justify-center bg-main-bg pt-2">
+  <div id="dashboard" class="felx mt-2 w-8/10 justify-center gap-4 p-2">
+    <h1 class="font-bold text-white text-2xl">Dashboard</h1>
+    <div id="post_box" class="flex flex-col rounded-xl bg-white/50 p-2">
+      <% @posts.each do |post| %>
+        <div id="post" class="flex flex-col rounded-xl bg-white p-2 mt-5">
+          <div id="title" class="rounded-b-xl p-2 font-bold shadow text-xl"><%= post.Title %>></div>
+          <div id="content" class="p-2"><%= post.content %></div>
+          <div id="data" class="flex w-full justify-between p-2 text-sm text-gray-500/70 italic">
+            <div id="author">Author: <%= post.user.email %></div>
+            <div id="date">Posted at: <%= l(post.created_at, format: :short) %></div>
+          </div>
+        </div>
+        <div class="ml-3">
+          <div id="comments" class="flex w-98/100 flex-col justify-end rounded-b-xl bg-nv-bar/75 p-2">
+            <div id="addcom" class="flex w-full p-2 shadow rounded-b-sm">
+              <%= form_with(model: Comment, class: "contents") do |form| %>
+                <%= form.textarea :content, rows: 1, placeholder: "Add comment...", class: ["text-md w-full rounded-xl bg-white/50 p-2 italic"] %>
+                <% if user_signed_in? %>
+                  <%= form.text_field :user_id, value: current_user.id, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full"], type: :hidden %>
+                <% else %>
+                  <%= form.text_field :user_id, value: 1, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full"], type: :hidden %>
+                <% end %>
+
+                <%= form.text_field :post_id, value: post.id, type: :hidden %>
+                <%= form.submit "Add+", class: "ml-2 justify-center p-2 text-white bg-blue-300/50 rounded-md hover:bg-blue-500 " %>
+              <% end %>
+            </div>
+            <% if post.comments.empty? %>
+              <p> BRAK KOMENTARZY </p>
+            <% else %>
+              <div class="max-h-30 scroll overflow-auto p-2">
+                <% post.comments.each do |comm| %>
+                  <div class="flex flex-col rounded-xl bg-white/70 p-2 shadow mt-3">
+                    <p class="text-md font-bold"><%= comm.user.email %></p>
+                    <div class="p-1 flex justify-between w-full">
+                      <%= comm.content %>
+                      <% if user_signed_in? %>
+                        <% if current_user.id == comm.user.id %>
+                          <div>
+                            <span class="btn bg-blue-300/50 hover:bg-blue-600">
+                              <%= link_to "Edit", edit_comment_path(comm) %>
+                            </span>
+                            <span class="btn bg-red-400/50 hover:bg-red-800 ">
+                              <%= button_to "Destroy", comm, method: :delete %>
+                            </span>
+                          </div>
+                        <% end %>
+                      <% end %>
+                    </div>
+                    <div class="text-sm text-gray-500/50 italic flex justify-end">
+                      <span> <%= l(comm.created_at, format: :short) %> </span>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+              <div class="flex justify-end">
+                <a id="morecom" class="flex text-end text-sm text-white/75 underline hover:text-black/75">Show
+                  more</a>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
