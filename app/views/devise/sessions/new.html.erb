@@ -1,0 +1,38 @@
+<div id="main" class="mt-15 flex h-dvh justify-center bg-main-bg pt-2">
+  <div id="dashboard" class="felx mt-2  justify-center gap-4 p-2">
+    <h1 class="mb-2 text-2xl font-bold text-white">Log in</h1>
+    <div id="post_box" class="flex flex-col rounded-xl bg-white/50 p-2">
+      <div id="post" class="flex flex-col rounded-xl bg-white p-2">
+        <div class="flex flex-col gap-4">
+          <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+            <div class="field">
+              <%= f.email_field :email, autofocus: true, placeholder: "Email", autocomplete: "email", class: " border-gray-400 p-2 mt-2 border-1 rounded-xl min-w-md" %>
+            </div>
+
+            <div class="field">
+              <%= f.password_field :password, placeholder: "Password", autocomplete: "current-password", class: " border-gray-400 p-2 mt-2 border-1 rounded-xl min-w-md" %>
+            </div>
+
+            <% if devise_mapping.rememberable? %>
+              <div class="field p-2 mt-2 rounded-xl flex gap-2">
+                <%= f.check_box :remember_me %>
+                <%= f.label :remember_me %>
+              </div>
+            <% end %>
+
+            <div class="actions justify-center p-2 rounded-xl">
+              <%= f.submit "Log in", class: "font-bold bg-blue-300 shadow p-2 rounded-xl text-white hover:bg-blue-700" %>
+            </div>
+          <% end %>
+          <div class="flex gap-2">
+            <%= render "devise/shared/links" %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+

@@ -3,7 +3,7 @@
   <% if user_signed_in? %>
     <%= link_to "New Post", new_post_path, class: "nv-link" %>
     <%= button_to "Sing out", destroy_user_session_path, method: :delete, class: "nv-link" %>
-    <%= link_to "Edit Profile", user_profile_path, class: "nv-link" %>
+    <%= link_to "Edit Profile", home_profile_path, class: "nv-link" %>
   <% else %>
     <%= link_to "Sing up", new_user_registration_path, class: "nv-link" %>
     <%= link_to "Sing in", new_user_session_path, class: "nv-link" %>

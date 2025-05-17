@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+@theme {
+    --color-nv-link: #4245f5;
+    --color-nv-bar: #484bff;
+    --color-main-bg: #320068;
+    --color-dashboard: #ffffff;
+}
+
+.nv-link {
+    @apply mt-2 min-w-25 justify-center rounded-md bg-nv-link p-2 text-center font-bold text-white hover:bg-amber-800;
+}
+
+.btn {
+    @apply rounded-md text-white font-bold p-2 text-center min-w-5 flex justify-center
+}
+
+.btn-profile {
+    @apply text-white bg-blue-400/80 p-2 active:text-blue-500
+}
+
+.profile-info {
+    @apply p-2 border-white rounded-xl m-2 bg-gray-500/50
+}

@@ -1,0 +1,26 @@
+<% content_for :title, "New post" %>
+<div id="main" class="mt-15 flex h-dvh justify-center bg-main-bg pt-2">
+  <div id="dashboard" class="felx mt-2  justify-center gap-4 p-2">
+    <h1 class="mb-2 text-2xl font-bold text-white">New Post</h1>
+    <div id="post_box" class="flex flex-col rounded-xl bg-white/50 p-2">
+      <div id="post" class="flex flex-col rounded-xl bg-white p-2">
+        <div class="flex flex-col gap-4">
+          <%= render "form", post: @post %>
+          <div class="flex justify-end -mt-12">
+            <%= link_to "Back to posts", posts_path, class: "text-gray-500 underline z-90 hover:text-blue-500" %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+
+
+
+
+
+
+
+
