@@ -1,24 +1,76 @@
-<div id="main" class="mt-15 flex h-dvh w-full justify-center bg-main-bg pt-2">
-  <div class="flex w-9/10 flex-col bg-white/50">
-    <div id="profile-info" class="bord-1 flex w-full flex-col bg-white/75">
-      <div class="flex w-full flex-col justify-center">
-        <div class="profile-info">
-          <%= current_user.email %></div>
-        <div class="profile-info">
-          <%= current_user.id %></div>
-        <div class="profile-info">**************</div>
-        <div class="profile-info">**************</div>
-      </div>
-      <div class="flex w-full justify-end gap-4">
-        <span class="btn bg-blue-500/50 hover:bg-blue-500">Edit</span>
-        <%= button_to "Cancel my account", registration_path(current_user), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete, class: "btn bg-red-500/50  hover:bg-red-500" %>
+<div class="w-full max-w-xl mx-auto mt-8 space-y-6">
+
+  <!-- 🔒 EMAIL FORM -->
+  <%= form_for(current_user, url: registration_path(current_user), method: :put, html: { id: "email-form" }) do |f| %>
+    <div class="bg-gray-100 p-4 rounded-xl">
+      <label class="block mb-2 font-semibold">Email</label>
+      <input type="email" name="user[email]" id="emailField" value="<%= current_user.email %>" disabled class="w-full rounded-xl border p-2"/>
+
+      <div class="flex mt-4 gap-2">
+        <button type="button" id="editEmailBtn" onclick="enableEdit('email')" class="bg-blue-500 text-white px-4 py-2 rounded">Edit</button>
+        <button type="submit" id="saveEmailBtn" class="bg-green-500 text-white px-4 py-2 rounded hidden">Save</button>
+        <button type="button" onclick="cancelEdit('email', '<%= current_user.email %>')" id="cancelEmailBtn" class="bg-gray-500 text-white px-4 py-2 rounded hidden">Cancel</button>
       </div>
     </div>
-    <div>
-      <div class="mt-5 flex bg-white/50">
-        <span class="btn-profile">POSTS</span>
-        <span class="btn-profile">COMMENT</span>
+  <% end %>
+
+  <!-- 🔑 PASSWORD FORM -->
+  <%= form_for(current_user, url: registration_path(current_user), method: :put, html: { id: "password-form" }) do |f| %>
+    <div class="bg-gray-100 p-4 rounded-xl">
+      <label class="block mb-2 font-semibold">New Password</label>
+      <input type="password" name="user[password]" id="passwordField" placeholder="**********" disabled class="w-full rounded-xl border p-2"/>
+
+      <label class="block mt-4 mb-2 font-semibold">Confirm New Password</label>
+      <input type="password" name="user[password_confirmation]" id="passwordConfirmField" placeholder="**********" disabled class="w-full rounded-xl border p-2"/>
+
+      <label class="block mt-4 mb-2 font-semibold">Current Password</label>
+      <input type="password" name="user[current_password]" id="currentPasswordField" placeholder="Your current password" disabled class="w-full rounded-xl border p-2"/>
+
+      <div class="flex mt-4 gap-2">
+        <button type="button" id="editPasswordBtn" onclick="enableEdit('password')" class="bg-blue-500 text-white px-4 py-2 rounded">Edit</button>
+        <button type="submit" id="savePasswordBtn" class="bg-green-500 text-white px-4 py-2 rounded hidden">Save</button>
+        <button type="button" onclick="cancelEdit('password')" id="cancelPasswordBtn" class="bg-gray-500 text-white px-4 py-2 rounded hidden">Cancel</button>
       </div>
     </div>
-  </div>
+  <% end %>
+
 </div>
+
+<!-- 🧠 JS to toggle editing -->
+<script>
+    function enableEdit(type) {
+        if (type === 'email') {
+            document.getElementById("emailField").disabled = false;
+            document.getElementById("editEmailBtn").classList.add("hidden");
+            document.getElementById("saveEmailBtn").classList.remove("hidden");
+            document.getElementById("cancelEmailBtn").classList.remove("hidden");
+        } else if (type === 'password') {
+            document.getElementById("passwordField").disabled = false;
+            document.getElementById("passwordConfirmField").disabled = false;
+            document.getElementById("currentPasswordField").disabled = false;
+            document.getElementById("editPasswordBtn").classList.add("hidden");
+            document.getElementById("savePasswordBtn").classList.remove("hidden");
+            document.getElementById("cancelPasswordBtn").classList.remove("hidden");
+        }
+    }
+
+    function cancelEdit(type, originalValue = "") {
+        if (type === 'email') {
+            document.getElementById("emailField").value = originalValue;
+            document.getElementById("emailField").disabled = true;
+            document.getElementById("editEmailBtn").classList.remove("hidden");
+            document.getElementById("saveEmailBtn").classList.add("hidden");
+            document.getElementById("cancelEmailBtn").classList.add("hidden");
+        } else if (type === 'password') {
+            document.getElementById("passwordField").value = "**********";
+            document.getElementById("passwordConfirmField").value = "**********";
+            document.getElementById("currentPasswordField").value = "";
+            document.getElementById("passwordField").disabled = true;
+            document.getElementById("passwordConfirmField").disabled = true;
+            document.getElementById("currentPasswordField").disabled = true;
+            document.getElementById("editPasswordBtn").classList.remove("hidden");
+            document.getElementById("savePasswordBtn").classList.add("hidden");
+            document.getElementById("cancelPasswordBtn").classList.add("hidden");
+        }
+    }
+</script>

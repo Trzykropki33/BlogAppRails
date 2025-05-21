@@ -20,5 +20,21 @@
 }
 
 .profile-info {
-    @apply p-2 border-white rounded-xl m-2 bg-gray-500/50
+    @apply p-2 border-white rounded-xl m-2
+}
+
+.cell {
+    @apply p-2 font-bold text-white border-black
+}
+
+.email-cell {
+    @apply bg-blue-800/50
+}
+
+.date-cell {
+    @apply bg-blue-400/50
+}
+
+.role-cell {
+    @apply bg-blue-800/50
 }

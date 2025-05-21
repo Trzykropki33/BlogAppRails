@@ -68,3 +68,8 @@ gem "devise", "~> 4.9"
 gem "tailwindcss-ruby", "~> 4.1"
 
 gem "tailwindcss-rails", "~> 4.2"
+
+gem 'pundit', '~> 2.0'
+gem "sidekiq", "~> 8.0"
+
+gem 'prawn', '~> 2.4'

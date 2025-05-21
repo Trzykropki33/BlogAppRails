@@ -1,0 +1,39 @@
+<div>
+  <table class="table-auto ">
+    <thead>
+    <tr>
+      <th>User Email</th>
+      <th>Data of join</th>
+      <th>Role</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <% User.all.each do |usr| %>
+      <tr>
+        <td class="cell email-cell"><%= usr.email %></td>
+        <td class="cell date-cell"><%= usr.created_at %></td>
+        <td class="cell role-cell"><%= usr.role %></td>
+        <td class="cell delete-cell">
+          <% if current_user.id != usr.id %>
+        <span>
+           <span class="btn bg-red-400/50 hover:bg-red-800 ">
+             <%#= button_to "Destroy", usr, method: :delete %>
+           </span>
+        </span>
+          <% end %>
+        </td>
+        <td class="cell edit-cell">
+          <% if current_user.id != usr.id %>
+        <span>
+           <span class="btn bg-blue-400/50 hover:bg-blue-800 ">
+             <%= button_to "EDIT", registration_path(usr) %>
+           </span>
+        </span>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>

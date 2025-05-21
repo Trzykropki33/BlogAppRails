@@ -15,7 +15,7 @@ class PostsController < ApplicationController
   # GET /posts/new
   def new
     #@post = Post.new
-    @post = current_user.post.build
+    @post = current_user.posts.build
   end
 
   # GET /posts/1/edit
@@ -25,7 +25,7 @@ class PostsController < ApplicationController
   # POST /posts or /posts.json
   def create
     #@post = Post.new(post_params)
-    @post = current_user.post.build(post_params)
+    @post = current_user.posts.build(post_params)
 
     respond_to do |format|
       if @post.save
@@ -53,6 +53,7 @@ class PostsController < ApplicationController
 
   # DELETE /posts/1 or /posts/1.json
   def destroy
+    authorize @post
     @post.destroy!
 
     respond_to do |format|
@@ -64,6 +65,16 @@ class PostsController < ApplicationController
   def correct_user
     @post = current_user.posts.find_by(id: params[:id])
     redirect_to post_path, notice: "Not authorized." if @post.nil?
+  end
+
+  # POST
+  def all_posts_to_pdf
+    
+  end
+
+  # POST
+  def post_to_pdf
+
   end
 
   private

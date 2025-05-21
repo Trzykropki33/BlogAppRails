@@ -1,42 +1,39 @@
-<h2>Sign up</h2>
+<div id="main" class="mt-15 flex h-dvh justify-center bg-main-bg pt-2">
+  <div id="dashboard" class="felx mt-2  justify-center gap-4 p-2">
+    <h1 class="mb-2 text-2xl font-bold text-white">Sing up</h1>
+    <div id="post_box" class="flex flex-col rounded-xl bg-white/50 p-2">
+      <div id="post" class="flex flex-col rounded-xl bg-white p-2">
+        <div class="flex flex-col gap-4">
+          <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+            <%= render "devise/shared/error_messages", resource: resource %>
 
-<%= User.all.each do |usr| %>
-  <div>
-    <div> <%= usr.email %> </div>
+            <div class="field actions justify-center p-2 rounded-xl">
+              <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "Email", class: " border-gray-400 p-2 mt-2 border-1 rounded-xl min-w-md" %>
+            </div>
+
+            <div class="field ">
+              <%= f.label :password %>
+              <% if @minimum_password_length %>
+                <em>(<%= @minimum_password_length %> characters minimum)</em>
+              <% end %><br/>
+              <%= f.password_field :password, autocomplete: "new-password", placeholder: "Password", class: " border-gray-400 p-2 mt-2 border-1 rounded-xl min-w-md" %>
+            </div>
+
+            <div class="field">
+              <%= f.label :password_confirmation %><br/>
+              <%= f.password_field :password_confirmation, autocomplete: "new-password", placeholder: "Retype password", class: " border-gray-400 p-2 mt-2 border-1 rounded-xl min-w-md" %>
+            </div>
+
+            <div class="actions">
+              <%= f.submit "Sign up", class: "font-bold bg-blue-300 shadow p-2 rounded-xl text-white hover:bg-blue-700 mt-2" %>
+            </div>
+
+          <% end %>
+          <div class="flex gap-2">
+            <%= render "devise/shared/links" %>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-<% end %>
-
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
-
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-  </div>
-
-
-  <% if true %>
-    <%= f.password_field :password, value: :"123456",type: :hidden%>
-    <%= f.password_field :password_confirmation, value: :"123456",type: :hidden%>
-
-  <% else %>
-  <div class="field">
-    <%= f.label :password %>
-    <% if @minimum_password_length %>
-    <em>(<%= @minimum_password_length %> characters minimum)</em>
-    <% end %><br />
-    <%= f.password_field :password, autocomplete: "new-password" %>
-  </div>
-
-  <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-  </div>
-
-  <% end %>
-  <div class="actions">
-    <%= f.submit "Sign up" %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+</div>

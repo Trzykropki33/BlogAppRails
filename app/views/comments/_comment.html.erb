@@ -1,10 +1,23 @@
-<div id="<%= dom_id comment %>" class="w-full sm:w-auto my-5 space-y-5">
-  <div>
-    <strong class="block font-medium mb-1">Content:</strong>
+<div class="flex flex-col rounded-xl bg-white/70 p-2 shadow mt-3">
+  <p class="text-md font-bold"><%= comment.user.email %></p>
+  <div class="p-1 flex justify-between w-full">
     <%= comment.content %>
+    <% if user_signed_in? %>
+      <% if policy(comment).destroy? %>
+        <div class="flex flex-row gap-2">
+          <% if current_user.id == comment.user.id %>
+          <span class="btn bg-blue-300/50 hover:bg-blue-600">
+            <%= link_to "Edit", edit_comment_path(comment) %>
+          </span>
+          <% end %>
+          <span class="btn bg-red-400/50 hover:bg-red-800 ">
+            <%= button_to "Destroy", comment, method: :delete %>
+          </span>
+        </div>
+      <% end %>
+    <% end %>
   </div>
-  <div>
-    <strong class="block font-medium mb-1">User:</strong>
-    <%= comment.user_id %>
+  <div class="text-sm text-gray-500/50 italic flex justify-end">
+    <span> <%= l(comment.created_at, format: :short) %> </span>
   </div>
 </div>

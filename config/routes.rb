@@ -1,7 +1,22 @@
+require "sidekiq/web"
+
 Rails.application.routes.draw do
+  if Rails.env.development?
+    mount Sidekiq::Web => "/sidekiq"
+  end
+
+  resources :worker_jobs, only: [:create]
   resources :comments
-  devise_for :users
   resources :posts
+  devise_for :users, controllers: {
+    sessions: 'users/sessions'
+  }
+
+  namespace :admin do
+    get "dashboard/index"
+    root to: "dashboard#index" # np. admin root path
+    resources :users
+  end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   root 'home#index'
   get 'home/profile'
