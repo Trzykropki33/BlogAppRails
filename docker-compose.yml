@@ -1,0 +1,75 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    # Use privileged mode to address permissions issues
+    # This is not ideal for production but helps in development environments
+    privileged: true
+
+  redis:
+    image: redis:7
+    restart: always
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+
+  web:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+      - redis
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@db:5432/postgres
+      REDIS_URL: redis://redis:6379/1
+      RAILS_ENV: development
+      SECRET_KEY_BASE: dummy_key_for_dev
+    volumes:
+      - ./app:/rails:cached
+      - web_storage:/rails/storage
+      - web_log:/rails/log
+      - web_tmp:/rails/tmp
+      - ./public:/rails/public:cached
+    ports:
+      - "3000:3000"
+    command: bash -c "bin/rails db:prepare && bin/rails server -b 0.0.0.0"
+
+  sidekiq:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    depends_on:
+      - redis
+      - db
+      - web # Ensure web service runs migrations first
+    environment:
+      REDIS_URL: redis://redis:6379/1
+      DATABASE_URL: postgres://postgres:postgres@db:5432/postgres
+      RAILS_ENV: development
+    volumes:
+      - ./app:/rails:cached
+      - web_storage:/rails/storage
+      - web_log:/rails/log
+      - web_tmp:/rails/tmp
+    command: bundle exec sidekiq
+
+volumes:
+  # Using Docker-managed named volumes without host binding
+  postgres_data:
+  redis_data:
+  web_storage:
+  web_log:
+  web_tmp:
